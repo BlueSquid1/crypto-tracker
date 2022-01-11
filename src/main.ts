@@ -1,14 +1,12 @@
-import express = require('express');
-import path = require('path');
+import { enableProdMode } from '@angular/core';
+import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-let portNum = process.env.PORT || 3000;
+import { AppModule } from './app/app.module';
+import { environment } from './environments/environment';
 
-let app = express();
+if (environment.production) {
+  enableProdMode();
+}
 
-//retrieve any requested file from the "views" folder
-app.get('/views/:name', function (req, res) {
-  res.sendFile(path.join(__dirname + '/views/' + req.params.name));
-});
-
-//call to api to get the latest data
-app.listen(portNum);
+platformBrowserDynamic().bootstrapModule(AppModule)
+  .catch(err => console.error(err));
