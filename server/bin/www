@@ -4,9 +4,13 @@
  * Module dependencies.
  */
 
+// Load environment variables from repos .env file.
+ require('dotenv').config();
 const app = require('../app').default();
 const debug = require('debug')('NameApp:server');
 const http = require('http');
+const mongo = require('../data/mongo').Mongo;
+
 /**
  * Get port from environment and store in Express.
  */
@@ -80,10 +84,26 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+async function onListening() {
   const addr = server.address();
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
+
+  try {
+    const url = mongo.buildMongoUrl({
+      appUser: process.env.APP_USER,
+      appPassword: process.env.APP_PWD,
+      dbName: process.env.MONGO_INITDB_DATABASE,
+      dbCollectionName: process.env.DB_COLLECTION_NAME,
+      hostName: process.env.NODE_ENV !== 'production' ? 'localhost' : process.env.MONGO_HOSTNAME,
+      mongoPort: process.env.MONGO_PORT
+    });
+    console.log("connecting to db with URL: " + url)
+    await mongo.connect(url);
+    console.log('Connected to MongoDb');
+  } catch(err) {
+    console.error('Unable to connect to MongoDb ::: ', err);
+  }
 }

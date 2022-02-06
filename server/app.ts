@@ -7,7 +7,7 @@ export default function createApp(): Express {
     const clientDir = path.join(__dirname, '../public');  
     app.use(express.static(clientDir));                   
     app.get('/api/:name', async (req: Request, res: Response) => {
-        const name = req.params.name;
+        const name = req.params['name'];
         const greeting = { greeting: `Hello, ${ name }` };
         res.send(greeting);
     });
