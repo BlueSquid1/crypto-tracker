@@ -7,7 +7,6 @@
 // Load environment variables from repos .env file.
  require('dotenv').config();
 const app = require('../app').default();
-const debug = require('debug')('NameApp:server');
 const http = require('http');
 const mongo = require('../data/mongo').Mongo;
 
@@ -89,7 +88,7 @@ async function onListening() {
   const bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  console.log('Listening on ' + bind);
 
   try {
     const url = mongo.buildMongoUrl({

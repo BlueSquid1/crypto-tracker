@@ -17,6 +17,9 @@ https://dev.to/jsheridanwells/a-modern-mean-stack-with-angular-and-typescript-pa
 Setup mongo DB:
 https://www.bmc.com/blogs/mongodb-docker-container/
 
+Make a custom docker container:
+https://docs.docker.com/language/nodejs/build-images/
+
 ## Useful tips
 can connect to mongo DB docker container by running the command `docker exec -it mongodb bash`
 
@@ -24,7 +27,11 @@ Check health of docker images by running: `docker ps -a`
 
 See logs of a docker image by running: `docker logs mongodb`
 
-## Development server
+Build server into a docker image `docker build --tag node-docker .`
+
+Run docker image `docker run -d --name crypto-server node-docker`
+
+## Build
 
 Run `npm run dev` for a dev server. Then navigate to `http://localhost:3000/`.
 

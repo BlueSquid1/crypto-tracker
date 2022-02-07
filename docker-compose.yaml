@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  mongodb:
+  mongo:
     container_name: ${MONGO_HOSTNAME}
     image : mongo:latest
     volumes:
@@ -9,8 +9,10 @@ services:
       
       # Database volume
       - mongodb-data:/data/db
-    ports:
-    - ${MONGO_PORT}:27017
+    networks:
+      - mongodb_network
+    #ports:
+    #- ${MONGO_PORT}:27017
     restart: unless-stopped
     environment:
       # Username and password to access database
@@ -22,6 +24,20 @@ services:
       - APP_USER=${APP_USER}
       - APP_PWD=${APP_PWD}
       - DB_COLLECTION_NAME=${DB_COLLECTION_NAME}
+
+  crypto-server:
+    container_name: crypto-server
+    image : node-docker:latest
+    depends_on:
+      - mongo
+    networks:
+      - mongodb_network
+    ports:
+    - 3000:3000
+    restart: unless-stopped
 volumes:
   mongodb-data:
     name: mongodb-data
+networks:
+  mongodb_network:
+    name: mongodb_network

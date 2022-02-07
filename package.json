@@ -2,7 +2,6 @@
   "name": "crypto-tracker",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
     "clean": "rm -rf ./dist/api && rm -rf ./dist/public/",
     "cp:www": "mkdir -p ./dist/api/bin && cp ./server/bin/www ./dist/api/bin/",
     "database:start": "docker-compose up -d",
