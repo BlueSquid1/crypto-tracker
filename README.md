@@ -1,5 +1,9 @@
 # CryptoTracker
 
+## TODO
+- Finish mongo db tutorial
+- (optional) create a development docker container that allow for rapid code updating
+
 ## Dependancies
 - NPM long term support version. Can be installed with `npm install -g n` and then `n lts`
 - TypeScript. Can be installed with `npm install -g typescript`
@@ -26,10 +30,6 @@ can connect to mongo DB docker container by running the command `docker exec -it
 Check health of docker images by running: `docker ps -a`
 
 See logs of a docker image by running: `docker logs mongodb`
-
-Build server into a docker image `docker build --tag node-docker .`
-
-Run docker image `docker run -d --name crypto-server node-docker`
 
 ## Build
 
