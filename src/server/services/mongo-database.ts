@@ -9,25 +9,25 @@ export interface MongoDbConfig {
   mongoPort: string | number;
 }
 
-export class Mongo {
+export class MongoDatabase {
   public static client: mongo.MongoClient | null;
 
   public static buildMongoUrl(config: MongoDbConfig): string {
     return 'mongodb://'
-      + `${ config.appUser }:${ encodeURIComponent(config.appPassword) }`
-      + `@${ config.hostName }:${ config.mongoPort }`
-      + `/${ config.dbName }`;
+      + `${config.appUser}:${encodeURIComponent(config.appPassword)}`
+      + `@${config.hostName}:${config.mongoPort}`
+      + `/${config.dbName}`;
   }
 
   public static connect(url: string): Promise<any> {
     return new Promise<any>((res, rej) => {
-      mongo.MongoClient.connect(url, (err : any, client: mongo.MongoClient | undefined) => {
+      mongo.MongoClient.connect(url, (err: any, client: mongo.MongoClient | undefined) => {
         if (err) {
-          Mongo.client = null;
+          MongoDatabase.client = null;
           rej(err);
         }
         else {
-          Mongo.client = client;
+          MongoDatabase.client = client;
           res(client);
         }
       });
@@ -35,9 +35,9 @@ export class Mongo {
   }
 
   public static disconnect(): void {
-    if (Mongo.client) {
-      Mongo.client.close();
+    if (MongoDatabase.client) {
+      MongoDatabase.client.close();
     }
-    Mongo.client = null;
+    MongoDatabase.client = null;
   }
 }

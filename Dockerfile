@@ -5,4 +5,4 @@ WORKDIR /app
 COPY ["package.json", "package-lock.json*", "./"]
 RUN npm install --production
 COPY . .
-CMD [ "node", "dist/api/bin/www" ]
+CMD [ "node", "./dist/api/index.js" ]

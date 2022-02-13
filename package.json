@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf ./dist/api && rm -rf ./dist/public/ && rm -rf ./node_modules",
-    "build": "npm install ; npm run cp:www ; tsc -p ./src/server/tsconfig.api.json ; docker build --tag node-docker .",
+    "build": "npm install ; tsc -p ./src/server/tsconfig.api.json ; docker build --tag node-docker .",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
-    "cp:www": "mkdir -p ./dist/api/bin && cp ./src/server/bin/www ./dist/api/bin/",
-    "database:drop_tables": "docker volume rm $(docker volume ls -q)",
-    "dev": "npm run cp:www ; concurrently -k \"tsc -p ./src/server/tsconfig.api.json -w\" \"nodemon -r ./dist/api/bin/www --watch\""
+    "cp:www": "mkdir -p ./dist/api && cp ./src/server/index.js ./dist/api/index.js",
+    "database:drop-tables": "docker volume rm $(docker volume ls -q)",
+    "dev": "npm run cp:www ; concurrently -k \"tsc -p ./src/server/tsconfig.api.json -w\" \"nodemon -r ./dist/api/index.js --watch\""
   },
   "private": true,
   "dependencies": {
@@ -25,12 +25,6 @@
     "@types/jasmine": "~3.10.0",
     "@types/mongodb": "^4.0.7",
     "@types/node": "^12.11.1",
-    "jasmine-core": "~3.10.0",
-    "karma": "~6.3.0",
-    "karma-chrome-launcher": "~3.1.0",
-    "karma-coverage": "~2.1.0",
-    "karma-jasmine": "~4.0.0",
-    "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.5.2"
   }
 }

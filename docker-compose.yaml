@@ -5,14 +5,14 @@ services:
     image : mongo:latest
     volumes:
       # Database first time startup script
-      - ./src/server/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+      - ./src/server/services/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
       
       # Database volume
       - mongodb-data:/data/db
     networks:
       - mongodb_network
-    # ports:
-    # - ${MONGO_PORT}:27017
+    ports:
+     - ${MONGO_PORT}:27017
     restart: unless-stopped
     environment:
       # Username and password to access database
@@ -23,7 +23,6 @@ services:
       # Variables for startup script
       - APP_USER=${APP_USER}
       - APP_PWD=${APP_PWD}
-      - DB_COLLECTION_NAME=${DB_COLLECTION_NAME}
 
   crypto-server:
     container_name: crypto-server

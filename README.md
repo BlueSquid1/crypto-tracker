@@ -1,8 +1,9 @@
 # CryptoTracker
 
 ## TODO
-- Finish mongo db tutorial
-- (optional) create a development docker container that allow for rapid code updating
+- setup unit tests
+- Do a react tutorial
+- create a development docker container that allow for rapid code updating
 
 ## Dependancies
 - NPM long term support version. Can be installed with `npm install -g n` and then `n lts`

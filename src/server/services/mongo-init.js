@@ -1,7 +1,9 @@
+/*
+    This script is automatically when docker creates the database volume for the first time. Must be javascript unfortunately.
+*/
 var dbName = _getEnv('MONGO_INITDB_DATABASE');
 var app_user = _getEnv('APP_USER');
 var app_pwd = _getEnv('APP_PWD');
-var collection = _getEnv('DB_COLLECTION_NAME');
 
 db = db.getSiblingDB(dbName);
 
@@ -18,4 +20,4 @@ db.createUser(
     }
 );
 
-db.createCollection(collection);
+db.createCollection("animals_table");
