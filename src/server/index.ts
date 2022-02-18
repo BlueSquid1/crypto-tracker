@@ -21,7 +21,7 @@ app.get('/api/:name', async (req: express.Request, res: express.Response) => {
     try {
         if(mongoDatabase.MongoDatabase.client)
         {
-            const animal : Animal = { animal: 'fish', name: 'Phillip' };
+            const animal : Animal = { animal: 'octopus', name: 'Phillip' };
             const collection = mongoDatabase.MongoDatabase.client.db('mydatabase').collection('animals_table');
             await collection.insertOne(animal);
             res.send(animal);
@@ -33,11 +33,7 @@ app.get('/api/:name', async (req: express.Request, res: express.Response) => {
     }
 });
 
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env['PORT'] || '3000');
+const port = '443';
 app.set('port', port);
 
 /**
@@ -56,26 +52,6 @@ server.on('listening', onListening);
 server.on('close', onClose);
 
 /**
- * Normalize a port into a number, string, or false.
- */
-
-function normalizePort(val : string) : string | number | boolean {
-  const port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
-
-/**
  * Event listener for HTTP server "error" event.
  */
 
@@ -83,19 +59,14 @@ function onError(error) {
   if (error.syscall !== 'listen') {
     throw error;
   }
-
-  const bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
-
   // handle specific listen errors with friendly messages
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      console.error('Port ' + port + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      console.error('Port ' + port + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -108,11 +79,7 @@ function onError(error) {
  */
 
 async function onListening() : Promise<void> {
-  const addr = server.address();
-  const bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
+  console.log('Listening on port ' + port);
 
   try {
     const url = mongoDatabase.MongoDatabase.buildMongoUrl({

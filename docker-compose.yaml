@@ -1,8 +1,18 @@
 version: "3.8"
 services:
+  crypto-server:
+    container_name: crypto-server
+    image: node-docker:latest
+    depends_on:
+      - mongo
+    networks:
+      - mongodb_network
+    ports:
+    - ${SERVER_PORT}:443
+    restart: unless-stopped
   mongo:
     container_name: ${MONGO_HOSTNAME}
-    image : mongo:latest
+    image: mongo:latest
     volumes:
       # Database first time startup script
       - ./src/server/services/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
@@ -23,17 +33,6 @@ services:
       # Variables for startup script
       - APP_USER=${APP_USER}
       - APP_PWD=${APP_PWD}
-
-  crypto-server:
-    container_name: crypto-server
-    image : node-docker:latest
-    depends_on:
-      - mongo
-    networks:
-      - mongodb_network
-    ports:
-    - 3000:3000
-    restart: unless-stopped
 volumes:
   mongodb-data:
     name: mongodb-data

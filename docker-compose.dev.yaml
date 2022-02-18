@@ -1,0 +1,5 @@
+services:
+  crypto-server:
+    image: dev-node-docker:latest
+    volumes:
+      - ./dist:/app/dist

@@ -3,21 +3,16 @@
 ## TODO
 - setup unit tests
 - Do a react tutorial
-- create a development docker container that allow for rapid code updating
 
 ## Dependancies
 - NPM long term support version. Can be installed with `npm install -g n` and then `n lts`
-- TypeScript. Can be installed with `npm install -g typescript`
-- Angular. Can be installed with `npm install -g @angular/cli`
 - Nodemon. Script that restarts the node application whenever a code change occurs. Can be installed with `npm install -g nodemon`
 - Concurrently. A tool that can run multiple npm processes in the same terminal. Can be installed with `npm install -g concurrently`
 - Docker. Lite weight virtual machine packages for programs. Can be downloaded from here: https://www.docker.com/products/docker-desktop
 
-## Inspiration for repository layout
-
+## Background resources
 setup a MEAN server:
 https://dev.to/jsheridanwells/a-modern-mean-stack-with-angular-and-typescript-part-1-242a
-
 
 Setup mongo DB:
 https://www.bmc.com/blogs/mongodb-docker-container/
@@ -25,16 +20,25 @@ https://www.bmc.com/blogs/mongodb-docker-container/
 Make a custom docker container:
 https://docs.docker.com/language/nodejs/build-images/
 
+Style guide for typescript:
+https://google.github.io/styleguide/tsguide.html
+
 ## Useful tips
-can connect to mongo DB docker container by running the command `docker exec -it mongodb bash`
+can connect to mongo DB docker container by running the command `docker exec -it mongo bash`
 
 Check health of docker images by running: `docker ps -a`
 
-See logs of a docker image by running: `docker logs mongodb`
+See logs of a docker image by running: `docker logs mongo`
 
 ## Build
 
-Run `npm run dev` for a dev server. Then navigate to `http://localhost:3000/`.
+Run: 
+```
+npm run build
+npm run start
+```
+
+Then navigate to `http://localhost:3000/`.
 
 ## Code scaffolding
 
