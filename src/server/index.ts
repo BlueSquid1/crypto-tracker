@@ -22,7 +22,7 @@ app.get('/api/:name', async (req: express.Request, res: express.Response) => {
     try {
         if(mongoDatabase.MongoDatabase.client)
         {
-            const animal : Animal = { animal: 'octopus', name: 'Phillip' };
+            const animal : Animal = { animal: 'owl', name: 'Greg' };
             const collection = mongoDatabase.MongoDatabase.client.db('mydatabase').collection('animals_table');
             await collection.insertOne(animal);
             res.send(animal);
