@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": "../../",
+    "resolveJsonModule": false,
+    "esModuleInterop": false,
+    "target": "ESNext",
+    "module": "CommonJS",
+    "outDir": "../../dist/api",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": [
+      "node"
+    ]
+  }
+}

@@ -1,11 +1,9 @@
 # CryptoTracker
 
 ## TODO
-- setup unit tests
-- Do a react tutorial
+- Do the react tutorial
 
 ## Dependancies
-- NPM long term support version. Can be installed with `npm install -g n` and then `n lts`
 - Nodemon. Script that restarts the node application whenever a code change occurs. Can be installed with `npm install -g nodemon`
 - Concurrently. A tool that can run multiple npm processes in the same terminal. Can be installed with `npm install -g concurrently`
 - Docker. Lite weight virtual machine packages for programs. Can be downloaded from here: https://www.docker.com/products/docker-desktop
@@ -23,6 +21,12 @@ https://docs.docker.com/language/nodejs/build-images/
 Style guide for typescript:
 https://google.github.io/styleguide/tsguide.html
 
+Setup react with jest:
+https://github.com/rajjeet/react-playbook/tree/master/packages/typescript-jest
+
+tutorial on using react with typescript:
+https://blog.logrocket.com/using-typescript-with-react-tutorial-examples/
+
 ## Useful tips
 can connect to mongo DB docker container by running the command `docker exec -it mongo bash`
 
@@ -38,7 +42,7 @@ npm run build
 npm run start
 ```
 
-Then navigate to `http://localhost:3000/`.
+Then navigate to `http://localhost:80/`.
 
 ## Code scaffolding
 
