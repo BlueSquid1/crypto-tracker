@@ -3,25 +3,34 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf ./dist/api && rm -rf ./dist/public/ && rm -rf ./node_modules",
-    "build": "npm install ; tsc -p ./src/server/tsconfig.api.json ; docker build --tag node-docker -f Prod.Dockerfile ./",
+    "build": "npm install ; tsc -p ./src/server/tsconfig.api.json ; docker build --tag node-docker -f ./scripts/Prod.Dockerfile ./",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
     "database:drop-tables": "docker volume rm $(docker volume ls -q)",
-    "dev": "npm install ; tsc -p ./src/server/tsconfig.api.json; docker build --tag dev-node-docker -f Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.api.json -w\""
+    "dev": "npm install ; tsc -p ./src/server/tsconfig.api.json; docker build --tag dev-node-docker -f ./scripts/Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.api.json -w\"",
+    "webpack": "webpack"
   },
   "private": true,
   "dependencies": {
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "mongodb": "^4.3.0",
-    "rxjs": "~7.4.0",
-    "tslib": "^2.3.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.20.45",
-    "typescript": "~4.5.2"
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "typescript": "~4.5.2",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2",
+    "html-webpack-plugin": "^5.5.0",
+    "ts-loader": "^9.2.6",
+    "rxjs": "~7.4.0",
+    "tslib": "^2.3.0"
   }
 }

@@ -27,7 +27,7 @@ export class MongoDatabase {
           rej(err);
         }
         else {
-          MongoDatabase.client = client;
+          MongoDatabase.client = client!;
           res(client);
         }
       });

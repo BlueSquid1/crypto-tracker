@@ -15,7 +15,8 @@ export interface Animal {
   }
 
 const app = express();
-const clientDir = path.join(__dirname, './public');  
+const clientDir = path.join(__dirname, '..', 'public');  
+console.log("client dir: " + clientDir);
 app.use(express.static(clientDir));                   
 app.get('/api/:name', async (req: express.Request, res: express.Response) => {
     try {
@@ -55,7 +56,7 @@ server.on('close', onClose);
  * Event listener for HTTP server "error" event.
  */
 
-function onError(error) {
+function onError(error : any) {
   if (error.syscall !== 'listen') {
     throw error;
   }
@@ -83,12 +84,12 @@ async function onListening() : Promise<void> {
 
   try {
     const url = mongoDatabase.MongoDatabase.buildMongoUrl({
-      appUser: process.env['APP_USER'],
-      appPassword: process.env['APP_PWD'],
-      dbName: process.env['MONGO_INITDB_DATABASE'],
-      dbCollectionName: process.env['DB_COLLECTION_NAME'],
-      hostName: process.env['NODE_ENV'] !== 'production' ? 'localhost' : process.env['MONGO_HOSTNAME'],
-      mongoPort: process.env['MONGO_PORT']
+      appUser: process.env['APP_USER']!,
+      appPassword: process.env['APP_PWD']!,
+      dbName: process.env['MONGO_INITDB_DATABASE']!,
+      dbCollectionName: process.env['DB_COLLECTION_NAME']!,
+      hostName: process.env['NODE_ENV'] !== 'production' ? 'localhost' : process.env['MONGO_HOSTNAME']!,
+      mongoPort: process.env['MONGO_PORT']!
     });
     console.log("connecting to db with URL: " + url)
     await mongoDatabase.MongoDatabase.connect(url);
