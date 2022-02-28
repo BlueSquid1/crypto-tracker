@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import * as dotenv from 'dotenv';
 // Load environment variables from repos .env file.
 dotenv.config();

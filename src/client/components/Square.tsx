@@ -1,15 +1,19 @@
 import * as React from "react";
 
-interface SquareInterface{
-  value: number;
+export type MarkUnion = 'X' | 'O' | null;
+
+export interface SquareProperty {
+    value: MarkUnion;
+    onClick: any;
 }
 
-export default class Square extends React.Component <SquareInterface, {}> {
-    override render() {
-      return (
-        <button className="square">
-          {this.props.value}
+export function Square(props : SquareProperty) {
+    return(
+      <button 
+            className="square" 
+            onClick={props.onClick}
+        >
+            {props.value}
         </button>
-      );
-    }
-  }
+    );
+}

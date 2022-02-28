@@ -1,18 +1,26 @@
 
 import * as React from "react";
-import Square from "./Square";
+import * as square from "./Square";
 
-export default class Board extends React.Component <{}> {
+interface BoardProperty {
+    squares : square.MarkUnion[];
+    onClick: any;
+}
+
+export class Board extends React.Component <BoardProperty, {}> {
+    
     renderSquare(i : number) {
-        return <Square value={i} />;
+        return ( 
+            <square.Square 
+                value={this.props.squares[i]} 
+                onClick={() => this.props.onClick(i)} 
+            />
+        );
     }
 
     override render() {
-        const status = 'Next player: X';
-
         return (
         <div>
-            <div className="status">{status}</div>
             <div className="board-row">
             {this.renderSquare(0)}
             {this.renderSquare(1)}
