@@ -2,6 +2,11 @@ body {
     font: 14px "Century Gothic", Futura, sans-serif;
     margin: 20px;
   }
+
+  .header {
+    font-size: 15px;
+    padding-bottom: 30px;
+  }
   
   ol, ul {
     padding-left: 30px;
