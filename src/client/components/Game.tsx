@@ -3,6 +3,11 @@ import * as board from "./Board";
 import * as square from "./Square";
 import * as moveHistory from "./MoveHistory";
 
+interface WinningResults {
+    winner : square.MarkUnion;
+    winningSquares : number[];
+}
+
 export interface Position {
     col : number,
     row : number
@@ -19,9 +24,17 @@ export class Game extends React.Component <any, GameState, {}> {
     {
         super(props)
 
+        let emptyBoard :  square.Mark[] = [];
+        for(let i = 0; i < 9; ++i) {
+            emptyBoard.push({
+                value: null,
+                isBold: false
+            })
+        }
+
         this.state = {
             history: [{
-                squares: Array(9).fill(null),
+                squares: emptyBoard,
             }],
             xIsNext: true,
             stepNumber: 0
@@ -31,14 +44,14 @@ export class Game extends React.Component <any, GameState, {}> {
     handleClick(i : number) {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        if(squares[i] || calculateWinner(squares)) {
+        const squares = JSON.parse(JSON.stringify(current.squares));
+        if(squares[i].value || calculateWinner(squares).winner) {
             return;
         }
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        squares[i].value = this.state.xIsNext ? 'X' : 'O';
         this.setState({
             history: history.concat([{
-                squares: squares
+                squares:  squares
             }]),
             xIsNext: !this.state.xIsNext,
             stepNumber: history.length
@@ -55,11 +68,14 @@ export class Game extends React.Component <any, GameState, {}> {
     override render() {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+        const winnerResults = calculateWinner(current.squares);
 
         let status;
-        if(winner) {
-            status = 'Winner: ' + winner;
+        if(winnerResults.winner) {
+            status = 'Winner: ' + winnerResults.winner;
+            winnerResults.winningSquares.forEach((i : number)=>{
+                current.squares[i].isBold = true;
+            });
         } else {
             status = 'Current player: ' + (this.state.xIsNext ? 'X' : 'O');
         }
@@ -86,7 +102,7 @@ export class Game extends React.Component <any, GameState, {}> {
     }
 }
 
-function calculateWinner(squares : square.MarkUnion[]) {
+function calculateWinner(squares : square.Mark[]) : WinningResults {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -99,9 +115,15 @@ function calculateWinner(squares : square.MarkUnion[]) {
     ];
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
-        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-            return squares[a];
+        if (squares[a].value && squares[a].value === squares[b].value && squares[a].value === squares[c].value) {
+            return {
+                winner: squares[a].value,
+                winningSquares: [a, b, c]
+            };
         }
     }
-    return null;
+    return {
+        winner: null,
+        winningSquares: []
+    };
   }

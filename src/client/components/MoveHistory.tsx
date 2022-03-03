@@ -3,7 +3,7 @@ import * as square from "./Square";
 import * as game from "./Game";
 
 export interface History {
-    squares : square.MarkUnion[];
+    squares : square.Mark[];
 }
 
 interface MoveHistoryProperty {
@@ -23,9 +23,9 @@ export class MoveHistory extends React.Component <MoveHistoryProperty, MoveHisto
         }
     }
 
-    calculateMove(prevSquares : square.MarkUnion[], curSquares : square.MarkUnion[]) : game.Position | null {
+    calculateMove(prevSquares : square.Mark[], curSquares : square.Mark[]) : game.Position | null {
         for(let i = 0; i < curSquares.length; ++i) {
-            if(prevSquares[i] != curSquares[i]) {
+            if(prevSquares[i].value != curSquares[i].value) {
                 return { 
                     col: (i % 3),
                     row: (Math.floor(i / 3))

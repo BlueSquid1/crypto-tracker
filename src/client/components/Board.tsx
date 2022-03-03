@@ -3,17 +3,16 @@ import * as React from "react";
 import * as square from "./Square";
 
 interface BoardProperty {
-    squares : square.MarkUnion[];
+    squares : square.Mark[];
     onClick: any;
 }
 
 export class Board extends React.Component <BoardProperty, {}> {
-
     renderSquare(i : number) {
-        return ( 
+        return (
             <square.Square
                 key={i}
-                value={this.props.squares[i]} 
+                mark={this.props.squares[i]}
                 onClick={() => this.props.onClick(i)} 
             />
         );
