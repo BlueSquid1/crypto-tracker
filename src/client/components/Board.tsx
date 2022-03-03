@@ -11,7 +11,8 @@ export class Board extends React.Component <BoardProperty, {}> {
 
     renderSquare(i : number) {
         return ( 
-            <square.Square 
+            <square.Square
+                key={i}
                 value={this.props.squares[i]} 
                 onClick={() => this.props.onClick(i)} 
             />
@@ -26,7 +27,7 @@ export class Board extends React.Component <BoardProperty, {}> {
                 columns.push(this.renderSquare(rowNum * 3 + colNum));
             }
             rows.push(
-            <div className="board-row">
+            <div className="board-row" key={rowNum}>
                 {columns}
             </div>
             )
