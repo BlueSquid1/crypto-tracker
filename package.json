@@ -7,7 +7,7 @@
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
     "database:drop-tables": "docker volume rm $(docker volume ls -q)",
-    "dev": "npm install ; tsc -p ./src/server/tsconfig.server.json; docker build --tag dev-node-docker -f ./scripts/Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.server.json -w\" \"webpack --config ./src/client/webpack.config.js --watch\"",
+    "dev": "npm install ; tsc -p ./src/server/tsconfig.server.json; docker build --tag dev-node-docker -f ./scripts/Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.server.json -w\" \"webpack --config ./src/client/webpack.config.js --mode development --watch\"",
     "test": "jest"
   },
   "private": true,

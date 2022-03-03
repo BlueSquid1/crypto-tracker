@@ -40,7 +40,7 @@ export class MoveHistory extends React.Component <MoveHistoryProperty, MoveHisto
             sortAscending: !this.state.sortAscending
         })
     }
-
+    
     override render() {
         const moves = this.props.history.map((curStep, index) => {
             let desc = 'Go to game start';
