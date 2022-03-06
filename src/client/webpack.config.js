@@ -34,5 +34,8 @@ module.exports = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
-  plugins: [new HtmlWebpackPlugin({ template: path.resolve(__dirname, 'index.html') })]
+  plugins: [new HtmlWebpackPlugin({ 
+    template: path.resolve(__dirname, 'public', 'index.html'),
+    favicon: path.resolve(__dirname, 'public', 'favicon.ico')
+  })]
 };

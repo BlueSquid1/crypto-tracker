@@ -13,13 +13,13 @@ export interface Position {
     row : number
 }
 
-interface GameState {
+interface State {
     history : moveHistory.History[];
     xIsNext : boolean;
     stepNumber : number;
 }
 
-export class Game extends React.Component <any, GameState, {}> {
+export class Game extends React.Component <{}, State, {}> {
     constructor(props : any)
     {
         super(props)
@@ -41,7 +41,7 @@ export class Game extends React.Component <any, GameState, {}> {
         }
     }
 
-    handleClick(i : number) {
+    private handleClick(i : number) : void {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = JSON.parse(JSON.stringify(current.squares));
@@ -58,14 +58,14 @@ export class Game extends React.Component <any, GameState, {}> {
         });
     }
 
-    jumpTo(move : number) {
+    private jumpTo(move : number) : void {
         this.setState({
             stepNumber: move,
             xIsNext: (move % 2) == 0
         })
     }
 
-    override render() {
+    override render() : React.ReactNode {
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[this.state.stepNumber];
         const winnerResults = calculateWinner(current.squares);

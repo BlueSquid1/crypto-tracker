@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 
 export type MarkUnion = 'X' | 'O' | null;
 
@@ -7,12 +7,12 @@ export interface Mark {
     isBold : boolean;
 }
 
-export interface SquareProperty {
+export interface Props {
     mark: Mark;
-    onClick: any;
+    onClick: () => void;
 }
 
-export function Square(props : SquareProperty) {
+export function Square(props : Props) : React.ReactElement | null {
     let markText;
     if(props.mark.isBold) {
         markText = <b>{props.mark.value}</b>
