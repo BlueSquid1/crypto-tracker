@@ -7,31 +7,52 @@ import * as http from 'http';
 import * as mongoDatabase from './services/mongo-database';
 import * as express from 'express';
 import * as path from 'path';
+//import * as bodyParser from 'body-parser';
+import 'source-map-support/register'; //TODO is this needed?
+import * as OpenAPI from 'openapi-backend';
 
 export interface Animal {
     animal:string;
     name: string;
-  }
+}
+
+const api = new OpenAPI.OpenAPIBackend({
+    definition: path.join(__dirname, '..', 'openapi.yml'),
+    handlers: {
+      getPets: async (c, req: express.Request, res: express.Response) =>
+        res.status(200).json({ operationId: c.operation.operationId }),
+      getPetById: async (c, req: express.Request, res: express.Response) =>
+        res.status(200).json({ operationId: c.operation.operationId }),
+      validationFail: async (c, req: express.Request, res: express.Response) =>
+        res.status(400).json({ err: c.validation.errors }),
+      notFound: async (c, req: express.Request, res: express.Response) => res.status(404).json({ err: 'not found' }),
+    },
+  });
 
 const app = express();
-const clientDir = path.join(__dirname, '..', 'public');  
-console.log("client dir: " + clientDir);
-app.use(express.static(clientDir));                   
-app.get('/api/:name', async (req: express.Request, res: express.Response) => {
-    try {
-        if(mongoDatabase.MongoDatabase.client)
-        {
-            const animal : Animal = { animal: 'owl', name: 'Greg' };
-            const collection = mongoDatabase.MongoDatabase.client.db('mydatabase').collection('animals_table');
-            await collection.insertOne(animal);
-            res.send(animal);
-        }
-        res.send("failed");
-    } catch (err)
-    {
+app.use(express.json()); //TODO: is this needed?
+app.use((req, res) => api.handleRequest(req as OpenAPI.Request, req, res));
+const clientDir = path.join(__dirname, '..', 'public');
+app.use(express.static(clientDir));
+// app.get('/api/:name', async (req: express.Request, res: express.Response) => {
+//     try {
+//         if(mongoDatabase.MongoDatabase.client)
+//         {
+//             const animal : Animal = { animal: 'owl', name: 'Greg' };
+//             const collection = mongoDatabase.MongoDatabase.client.db('mydatabase').collection('animals_table');
+//             await collection.insertOne(animal);
+//             res.send(animal);
+//         }
+//         res.send("failed");
+//     } catch (err)
+//     {
         
-    }
-});
+//     }
+// });
+
+// app.post('/submit', async (req: express.Request, res: express.Response) => {
+//     res.send(req.body);
+// });
 
 const port = '443';
 app.set('port', port);

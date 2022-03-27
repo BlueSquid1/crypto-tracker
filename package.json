@@ -3,11 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "clean": "rm -rf ./dist/api && rm -rf ./dist/public/ && rm -rf ./node_modules",
-    "build": "npm install ; webpack --config ./src/client/webpack.config.js ; tsc -p ./src/server/tsconfig.server.json ; docker build --tag node-docker -f ./scripts/Prod.Dockerfile ./",
+    "build": "npm install ; webpack --config ./src/client/webpack.config.js ; tsc -p ./src/server/tsconfig.server.json ; tsc -p ./src/common/tsconfig.common.json ; docker build --tag node-docker -f ./scripts/Prod.Dockerfile ./",
     "start": "docker-compose up -d",
     "stop": "docker-compose down",
     "database:drop-tables": "docker volume rm $(docker volume ls -q)",
-    "dev": "npm install ; tsc -p ./src/server/tsconfig.server.json; docker build --tag dev-node-docker -f ./scripts/Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.server.json -w\" \"webpack --config ./src/client/webpack.config.js --mode development --watch\"",
+    "dev": "npm install ; tsc -p ./src/server/tsconfig.server.json; tsc -p ./src/common/tsconfig.common.json ; docker build --tag dev-node-docker -f ./scripts/Dev.Dockerfile ./ ; docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up -d ; concurrently -k \"tsc -p ./src/server/tsconfig.server.json -w\" \"webpack --config ./src/client/webpack.config.js --mode development --watch\"",
     "test": "jest"
   },
   "private": true,
@@ -15,6 +15,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.2",
     "mongodb": "^4.3.0",
+    "openapi-backend": "^5.3.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "zone.js": "~0.11.4"

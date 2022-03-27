@@ -2,6 +2,8 @@
 
 ## TODO
 - Do the react tutorial
+- Implement openApi for front end and connect .yaml schema in common folder (see if tsconfig.common.json can help)
+- resovle todo's
 
 ## Dependancies
 - Nodemon. Script that restarts the node application whenever a code change occurs. Can be installed with `npm install -g nodemon`
