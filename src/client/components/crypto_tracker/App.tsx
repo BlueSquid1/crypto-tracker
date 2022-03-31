@@ -1,8 +1,28 @@
 import * as React from "react";
+import {
+
+  ApolloClient,
+
+  InMemoryCache,
+
+  ApolloProvider,
+
+  useQuery,
+  gql
+} from "@apollo/client";
+
 
 interface State {
     apiKey : string
 }
+
+const client = new ApolloClient({
+
+  uri: 'http://localhost/graphql',
+
+  cache: new InMemoryCache()
+
+});
 
 export class App extends React.Component <{}, State, {}> {
     constructor(props : any)
@@ -24,19 +44,12 @@ export class App extends React.Component <{}, State, {}> {
     private async handleSubmit(e : React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        let res = await fetch("/submit", {
-            method: "POST",
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.state)
-        });
-
-        let resJson = await res.json();
-
-        if (res.status == 200) {
-            alert("success " + JSON.stringify(resJson));
-        } else {
-            alert("failed " + JSON.stringify(resJson));
-        }
+        client.query({
+            query: gql`
+            query { books {title} }
+            `
+        })
+        .then(result => alert(JSON.stringify(result)));
     }
 
     override render() : React.ReactNode {

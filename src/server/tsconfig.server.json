@@ -3,15 +3,16 @@
   "compilerOptions": {
     "baseUrl": "../../",
     "resolveJsonModule": false,
-    "esModuleInterop": false,
-    "target": "ESNext",
-    "module": "CommonJS",
+    "esModuleInterop": true,
+    "target": "es2019",
+    "module": "commonjs",
     "outDir": "../../dist/api",
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "types": [
       "node"
-    ]
+    ],
+    "lib": ["es2020"]
   }
 }

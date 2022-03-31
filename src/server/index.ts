@@ -7,70 +7,154 @@ import * as http from 'http';
 import * as mongoDatabase from './services/mongo-database';
 import * as express from 'express';
 import * as path from 'path';
-//import * as bodyParser from 'body-parser';
-import 'source-map-support/register'; //TODO is this needed?
-import * as OpenAPI from 'openapi-backend';
+import * as graphql from 'graphql';
+import { ApolloServer } from 'apollo-server-express';
+import { ApolloServerPluginDrainHttpServer, gql } from 'apollo-server-core';
+import gqlTag from 'graphql-tag';
 
-export interface Animal {
-    animal:string;
-    name: string;
+var schema = graphql.buildSchema(`
+  type RandomDie {
+    numSides: Int!
+    rollOnce: Int!
+    roll(numRolls: Int!): [Int]
+  }
+
+  type Query {
+    getDie(numSides: Int): RandomDie
+  }
+`);
+
+
+// This class implements the RandomDie GraphQL type
+class RandomDie {
+  numSides: number;
+  
+  constructor(numSides : number) {
+    this.numSides = numSides;
+  }
+
+  rollOnce() {
+    return 1 + Math.floor(Math.random() * this.numSides);
+  }
+
+  roll({numRolls} : any) : number[] {
+    var output = [];
+    for (var i = 0; i < numRolls; i++) {
+      output.push(this.rollOnce());
+    }
+    return output;
+  }
 }
 
-const api = new OpenAPI.OpenAPIBackend({
-    definition: path.join(__dirname, '..', 'openapi.yml'),
-    handlers: {
-      getPets: async (c, req: express.Request, res: express.Response) =>
-        res.status(200).json({ operationId: c.operation.operationId }),
-      getPetById: async (c, req: express.Request, res: express.Response) =>
-        res.status(200).json({ operationId: c.operation.operationId }),
-      validationFail: async (c, req: express.Request, res: express.Response) =>
-        res.status(400).json({ err: c.validation.errors }),
-      notFound: async (c, req: express.Request, res: express.Response) => res.status(404).json({ err: 'not found' }),
-    },
-  });
+// // The root provides the top-level API endpoints
+// var root = {
+//   getDie: ({numSides} : any) => {
+//     return new RandomDie(numSides || 6);
+//   }
+// }
 
-const app = express();
-app.use(express.json()); //TODO: is this needed?
-app.use((req, res) => api.handleRequest(req as OpenAPI.Request, req, res));
-const clientDir = path.join(__dirname, '..', 'public');
-app.use(express.static(clientDir));
-// app.get('/api/:name', async (req: express.Request, res: express.Response) => {
-//     try {
-//         if(mongoDatabase.MongoDatabase.client)
-//         {
-//             const animal : Animal = { animal: 'owl', name: 'Greg' };
-//             const collection = mongoDatabase.MongoDatabase.client.db('mydatabase').collection('animals_table');
-//             await collection.insertOne(animal);
-//             res.send(animal);
-//         }
-//         res.send("failed");
-//     } catch (err)
-//     {
-        
-//     }
-// });
 
-// app.post('/submit', async (req: express.Request, res: express.Response) => {
-//     res.send(req.body);
-// });
+// export interface Animal {
+//     animal:string;
+//     name: string;
+// }
+
+const typeDefs = gql`
+
+  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
+
+
+  # This "Book" type defines the queryable fields for every book in our data source.
+
+  type Book {
+
+    title: String
+
+    author: String
+
+  }
+
+
+  # The "Query" type is special: it lists all of the available queries that
+
+  # clients can execute, along with the return type for each. In this
+
+  # case, the "books" query returns an array of zero or more Books (defined above).
+
+  type Query {
+
+    books: [Book]
+
+  }
+
+`;
+
+const books = [
+
+  {
+
+    title: 'The Awakening',
+
+    author: 'Kate Chopin',
+
+  },
+
+  {
+
+    title: 'City of Glass',
+
+    author: 'Paul Auster',
+
+  },
+
+];
+
+const resolvers = {
+
+  Query: {
+
+    books: () => books,
+
+  },
+
+};
 
 const port = '443';
-app.set('port', port);
+async function startApolloServer(typeDefs : any, resolvers : any) {
+  const app = express.default();
+  const clientDir = path.join(__dirname, '..', 'public');
+  app.use(express.static(clientDir));
 
-/**
- * Create HTTP server.
- */
+  app.set('port', port);
 
-const server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+  /**
+   * Create HTTP server.
+   */
 
-server.listen(port, () : void => console.log(`Application is listening on port ${ port }`));
-server.on('error', onError);
-server.on('listening', onListening);
-server.on('close', onClose);
+  const httpServer = http.createServer(app);
+
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
+
+  await server.start();
+
+  server.applyMiddleware({ app });
+
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  httpServer.on('error', onError);
+  httpServer.on('listening', onListening);
+  httpServer.on('close', onClose);
+  await new Promise<void>(resolve => httpServer.listen({ port: port }, resolve));
+  console.log(`Application is listening on port ${ port }`);
+}
+
+startApolloServer(typeDefs, resolvers);
 
 /**
  * Event listener for HTTP server "error" event.

@@ -29,6 +29,9 @@ https://github.com/rajjeet/react-playbook/tree/master/packages/typescript-jest
 tutorial on using react with typescript:
 https://blog.logrocket.com/using-typescript-with-react-tutorial-examples/
 
+tutorial on using TypeGraphQL:
+https://typegraphql.com/docs/installation.html
+
 ## Useful tips
 can connect to mongo DB docker container by running the command `docker exec -it mongo bash`
 
